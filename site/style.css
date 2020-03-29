@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    padding: 20px 15%;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    line-height: 1.5;
+    color: #FFFFFF;
+    background-color: #173F5F;
+}
+
+main {
+    font-size: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.project_name {
+    margin: 0;
+    text-align: center;
+    padding: 0;
+}
+
+.task {
+    margin-top: 30px;
+}
+.targets {
+    padding: 10px;
+    border: 5px solid #FFFFFF;
+    margin-top: 15px;
+}
+.targets ul,
+.team ul {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.team {
+    padding: 10px;
+    border: 5px solid #FFFFFF;
+    margin-top: 10px;
+}
+.team ul li {
+    color: #EEEEEE;
+}
+
+.targets ul li {
+    font-size: 18px;
+}
+.group {
+    font-size: 18px;
+    margin-top: 5px;
+}
+.work {
+    padding: 10px;
+    border: 5px solid #FFFFFF;
+    margin-top: 15px;
+}
+.work h3 {
+    margin-bottom: 10px;
+}
+.links h3 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.links a {
+    text-decoration: none;
+    color: #CCCCCC;
+}
+.links a:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
+}
