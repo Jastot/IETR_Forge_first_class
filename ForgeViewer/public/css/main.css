@@ -16,7 +16,7 @@ body {
   font-family: monospace;
   overflow: auto;
   width: 100%;
-  height: 200px !important;
+  height: 30% !important;
 }
 
 #forgeViewer {
@@ -29,4 +29,32 @@ body {
   font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-align: center;
+}
+
+.objectTrees tbody{
+  display:block;
+  overflow:auto;
+  height: 500px;
+  width:100%;
+}
+
+.objectTrees thead tr{
+  display:block;
+}
+
+tr :last-child {
+  width: 100%;
+}
+
+tr :first-child {
+  width: 50px;
+}
+
+.col-sm-8 {
+  width: 80%;
+  height: 100%;
+}
+
+.col-sm-4 {
+  width: 20%;
 }

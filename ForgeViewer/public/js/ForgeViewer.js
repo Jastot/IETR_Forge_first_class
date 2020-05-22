@@ -20,17 +20,27 @@ function onDocumentLoadSuccess(doc) {
     // documented loaded, any action?
   });
 
+  supportTree = {};
+
   viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, function () {
     const tree = viewer.model.getInstanceTree();
     const rootId = tree.getRootId();
     tree.enumNodeChildren(
       rootId,
       function (dbId) {
-        console.log(dbId, tree.getNodeName(dbId));
+        let name = tree.getNodeName(dbId);
+        if (supportTree[name] === undefined) {
+          supportTree[name] = [];
+        }
+        tree.enumNodeChildren(dbId, function (id) {
+          supportTree[name].push(id);
+        })
       },
       true
-    )
+    );
+    initTable(supportTree);
   });
+  console.log(supportTree);
 }
 
 function onDocumentLoadFailure(viewerErrorCode) {
@@ -43,4 +53,26 @@ function getForgeToken(callback) {
       callback(data.access_token, data.expires_in);
     });
   });
+}
+
+function initTable(supportTree) {
+  let treeInfo = supportTree;
+  let index = 1;
+  let table = document.querySelector('.items_table1 tbody');
+  console.log(treeInfo);
+  for (let key in treeInfo) {
+
+    let tr = document.createElement("tr");
+    let td1 = document.createElement("td");
+    let td2 = document.createElement("td");
+
+    table.append(tr);
+    tr.append(td1);
+    tr.append(td2);
+
+    td1.innerText = index;
+    td2.innerText = key;
+
+    index++;
+  }
 }
