@@ -12,8 +12,8 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/start.js",
             "env": {
-                "FORGE_CLIENT_ID": "UVbeZVF90qEmn84bkisrGsQD6RioqBQH",
-                "FORGE_CLIENT_SECRET": "zhXI0DmaqdiPoKvN",
+                "FORGE_CLIENT_ID": "JFMEl44msQFBF2H66jKGAZtGRBhDeTMv",
+                "FORGE_CLIENT_SECRET": "4UK6uMoTfryuqw07",
                 "FORGE_CALLBACK_URL": "http://localhost:3000/api/forge/callback/oauth"
             }
         }

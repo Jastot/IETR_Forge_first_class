@@ -1,6 +1,7 @@
 var viewer;
+launchViewer();
 
-function launchViewer(urn) {
+function launchViewer() {
   var options = {
     env: 'AutodeskProduction',
     getAccessToken: getForgeToken
@@ -9,7 +10,8 @@ function launchViewer(urn) {
   Autodesk.Viewing.Initializer(options, () => {
     viewer = new Autodesk.Viewing.GuiViewer3D(document.getElementById('forgeViewer'), { extensions: [ 'Autodesk.DocumentBrowser'] });
     viewer.start();
-    var documentId = 'urn:'+urn;
+    let urn = 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDIwLTA1LTIzLTA3LTQ2LTI4LWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL2JveGVyRW5naW5lLnN0cA';
+    var documentId = 'urn:'+ urn;
     Autodesk.Viewing.Document.load(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
   });
 }
@@ -20,17 +22,18 @@ function onDocumentLoadSuccess(doc) {
     // documented loaded, any action?
   });
 
-  supportTree = {};
+  let supportTree = {};
 
   viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, function () {
     const tree = viewer.model.getInstanceTree();
     const rootId = tree.getRootId();
+    
     tree.enumNodeChildren(
       rootId,
       function (dbId) {
         let name = tree.getNodeName(dbId);
         if (supportTree[name] === undefined) {
-          supportTree[name] = [];
+          supportTree[name] = [dbId];
         }
         tree.enumNodeChildren(dbId, function (id) {
           supportTree[name].push(id);
@@ -40,7 +43,6 @@ function onDocumentLoadSuccess(doc) {
     );
     initTable(supportTree);
   });
-  console.log(supportTree);
 }
 
 function onDocumentLoadFailure(viewerErrorCode) {
@@ -72,7 +74,10 @@ function initTable(supportTree) {
 
     td1.innerText = index;
     td2.innerText = key;
-
+    
     index++;
   }
+}
+
+function zoom(elem) {
 }

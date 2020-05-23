@@ -15,7 +15,7 @@
   <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
   <!-- this project files -->
   <link href="css/main.css" rel="stylesheet" />
-  <script src="js/ForgeTree.js"></script>
+  <!--<script src="js/ForgeTree.js"></script>-->
   <script src="js/ForgeViewer.js"></script>
 </head>
 <body>
@@ -40,15 +40,15 @@
       <div class="col-sm-4 fill1">
         <div class="panel panel-default fill">
           <div class="panel-heading" data-toggle="tooltip">
-            Buckets &amp; Objects
-            <span id="refreshBuckets" class="glyphicon glyphicon-refresh" style="cursor: pointer"></span>
+            Tree Model
+            <!--<span id="refreshBuckets" class="glyphicon glyphicon-refresh" style="cursor: pointer"></span>
             <button class="btn btn-xs btn-info" style="float: right" id="showFormCreateBucket" data-toggle="modal" data-target="#createBucketModal">
               <span class="glyphicon glyphicon-folder-close"></span> New bucket
-            </button>
+            </button>-->
           </div>
-          <div id="appBuckets">
+          <!--<div id="appBuckets">
             tree here
-          </div>
+          </div>-->
           <div class="objectTrees">
             <table class="items_table1 table">
               <thead>
@@ -57,7 +57,7 @@
                   <th>Наименование</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="treePart">
               </tbody>
             </table>
           </div>
