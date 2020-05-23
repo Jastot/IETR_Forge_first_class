@@ -41,15 +41,17 @@ function addAnnotation(x, y, z, annotationText, id, flag) {
 
 document.addEventListener('mousemove', onMouseMove, false);
 
-function hideAnnotation (id) {
+function hideAnnotation(id) {
     const annotation = document.querySelector('#annotation-' + id);
     const hidden = annotation.classList.contains('hidden');
     document.querySelector('#annotation-text-' + id).innerHTML = hidden ? annotations[id].text : '';
     if (hidden) {
         annotation.classList.remove('hidden');
+        annotation.classList.remove('off');
     }
     else {
         annotation.classList.add('hidden');
+        annotation.classList.add('off');
     }
 }
 
@@ -65,7 +67,7 @@ function setAnotationMode() {
 function displayAnnotation(id) {
     const annotation = document.createElement('div');
     annotation.id = 'annotation-' + id;
-    annotation.classList.add('annotation', 'hidden');
+    annotation.classList.add('annotation');
     document.querySelector('#forgeViewer').appendChild(annotation);
     const annotationText = document.createElement('p');
     annotationText.id = 'annotation-text-' + id;
@@ -103,6 +105,15 @@ function update() {
             clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
             p2.x = clientPos.x;
             p2.y = clientPos.y;
+            if (p2.x < 15 || p2.y > 800) {
+                document.querySelector('#annotation-' + id).classList.add('hidden');
+                document.querySelector('#annotation-index-' + id).classList.add('hidden');
+            } else {
+                if (!(document.querySelector('#annotation-' + id).classList.contains('off'))) {
+                    document.querySelector('#annotation-' + id).classList.remove('hidden');
+                }
+                document.querySelector('#annotation-index-' + id).classList.remove('hidden');
+            }
             document.querySelector('#annotation-' + id).style.left = p2.x + "px";
             document.querySelector('#annotation-' + id).style.top = p2.y + "px";
             document.querySelector('#annotation-index-' + id).style.left = p2.x - 15 + "px";
@@ -140,6 +151,7 @@ function annotationInit() {
 }
 
 function onMouseMove() {
+    window.requestAnimationFrame(onMouseMove);
     if (isStarted) {
         update();
     }
