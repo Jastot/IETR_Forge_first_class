@@ -43,6 +43,7 @@ function onDocumentLoadSuccess(doc) {
     );
     initTable(supportTree);
   });
+  annotationInit();
 }
 
 function onDocumentLoadFailure(viewerErrorCode) {

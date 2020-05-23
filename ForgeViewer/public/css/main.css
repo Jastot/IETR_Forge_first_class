@@ -34,7 +34,7 @@ body {
 .objectTrees tbody{
   display:block;
   overflow:auto;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 190px);
   width:100%;
 }
 
@@ -57,4 +57,46 @@ tr :first-child {
 
 .col-sm-4 {
   width: 20%;
+}
+
+.annotation {
+  position: absolute;
+  z-index: 1;
+  margin-left: 15px;
+  margin-top: 15px;
+  padding: 8px;
+  color: #fff;
+  border-radius: 0.5em;
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+}
+
+.annotation-number {
+  z-index: 1;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 30px;
+  color: #fff;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#number {
+  position: absolute;
+  z-index: -1;
+}
+
+.annotation p {
+  word-break: break-all;
+  margin-bottom: 0px;
+}
+
+#annotationMode {
+  width: 50;
+  height: 25px;
 }
