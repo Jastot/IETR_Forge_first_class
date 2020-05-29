@@ -2,19 +2,21 @@ document.querySelector("#forgeViewer").addEventListener("click", onMouseClick);
 
 let annotations = [];
 let annotationMode = false;
+let annotationRemoveMode = false;
 let isStarted = false;
+var input = document.getElementById("annotationRemoveNumber");
 
 function onMouseClick(e) {
     const x = e.clientX - document.querySelector("#left").clientWidth - 15, 
     y = e.clientY - document.querySelector("#top").clientHeight;
     
-    console.log(x,y);
+    //console.log(x,y);
 
     const res = viewer.impl.castRay(x, y, true);
 
     if(res) {
         pos = viewer.impl.clientToWorld(x, y);
-        console.log(pos.point);
+        //console.log(pos.point);
         onItemClick(pos.point);
     }
 
@@ -36,38 +38,41 @@ function addAnnotation(x, y, z, annotationText, id, flag) {
         text: annotationText
     };
     displayAnnotation(id);
-    setAnotationPosition(id);
+    setAnnotationPosition(id);
 }
-
 document.addEventListener('mousemove', onMouseMove, false);
 
-function hideAnnotation(id) {
+function hideAnnotation (id) {
     const annotation = document.querySelector('#annotation-' + id);
     const hidden = annotation.classList.contains('hidden');
     document.querySelector('#annotation-text-' + id).innerHTML = hidden ? annotations[id].text : '';
     if (hidden) {
         annotation.classList.remove('hidden');
-        annotation.classList.remove('off');
     }
     else {
         annotation.classList.add('hidden');
-        annotation.classList.add('off');
     }
 }
 
-function setAnotationMode() {
+function setAnnotationMode() {
     annotationMode = !annotationMode;
     if (annotationMode) {
+        document.querySelector("#annotationAddText").classList.remove('hidden');
         document.querySelector("#annotationText").classList.remove('hidden');
+        document.querySelector("#stopAnnotationMode").classList.remove('hidden');
+        if (annotationRemoveMode)
+            setAnnotationRemoveMode();
     } else {
         document.querySelector("#annotationText").classList.add('hidden');
+        document.querySelector("#annotationAddText").classList.add('hidden');
+        document.querySelector("#stopAnnotationMode").classList.add('hidden');
     }
 }
 
 function displayAnnotation(id) {
     const annotation = document.createElement('div');
     annotation.id = 'annotation-' + id;
-    annotation.classList.add('annotation');
+    annotation.classList.add('annotation', 'hidden');
     document.querySelector('#forgeViewer').appendChild(annotation);
     const annotationText = document.createElement('p');
     annotationText.id = 'annotation-text-' + id;
@@ -80,12 +85,14 @@ function displayAnnotation(id) {
     annotationNumber.classList.add('annotation-number');
     annotationNumber.addEventListener('click', (e) =>  {
         e.stopPropagation();
-        this.hideAnnotation(id);
+        //console.log(e);
+        this.hideAnnotation(annotationNumber.id.substring(17));
+        //console.log(annotationNumber);
     });
     document.querySelector('#forgeViewer').appendChild(annotationNumber);
 }
 
-function setAnotationPosition(id) {
+function setAnnotationPosition(id) {
     let p2 = new THREE.Vector3(annotations[id].x, annotations[id].y, annotations[id].z);
     if (!viewer.impl.camera.position.equals(p2)) {
         clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
@@ -105,14 +112,14 @@ function update() {
             clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
             p2.x = clientPos.x;
             p2.y = clientPos.y;
-            if (p2.x < 15 || p2.y > 800) {
-                document.querySelector('#annotation-' + id).classList.add('hidden');
-                document.querySelector('#annotation-index-' + id).classList.add('hidden');
-            } else {
-                if (!(document.querySelector('#annotation-' + id).classList.contains('off'))) {
-                    document.querySelector('#annotation-' + id).classList.remove('hidden');
-                }
-                document.querySelector('#annotation-index-' + id).classList.remove('hidden');
+            if(p2.x<0) {
+                document.querySelector('#annotation-' + id).classList.add("hidden");
+                document.querySelector('#annotation-text-' + id).classList.add("hidden");
+                document.querySelector('#annotation-index-' + id).classList.add("hidden");
+            }else {
+                document.querySelector('#annotation-text-' + id).classList.remove("hidden");
+                document.querySelector('#annotation-index-' + id).classList.remove("hidden");
+                wasOutOfBounds = false;
             }
             document.querySelector('#annotation-' + id).style.left = p2.x + "px";
             document.querySelector('#annotation-' + id).style.top = p2.y + "px";
@@ -120,9 +127,9 @@ function update() {
             document.querySelector('#annotation-index-' + id).style.top = p2.y - 15 + "px";
         }
     }
-    if (annotations.length > 0) {
+    
         this.changeVisibilityOfAnnotations();
-    }
+    
 }
 
 function changeVisibilityOfAnnotations() {
@@ -148,11 +155,74 @@ function getClosestAnnotation() {
 
 function annotationInit() {
     isStarted = true;
+    onMouseMove();
 }
 
 function onMouseMove() {
-    window.requestAnimationFrame(onMouseMove);
+    //window.requestAnimationFrame(onMouseMove);
     if (isStarted) {
         update();
     }
+}
+
+function setAnnotationRemoveMode() {
+    annotationRemoveMode = !annotationRemoveMode;
+    if (annotationRemoveMode)
+    {
+        input.value ="0";
+        if (annotations.length == 0)
+            input.setAttribute("max", "0");
+        else
+            input.setAttribute("max",annotations.length - 1);
+        document.querySelector("#annotationRemoveText").classList.remove('hidden');
+        document.querySelector("#annotationRemoveNumber").classList.remove('hidden');
+        document.querySelector("#confirmRemoveAnnotation").classList.remove('hidden');
+        document.querySelector("#stopAnnotationRemoveMode").classList.remove('hidden');
+        if (annotationMode)
+            setAnnotationMode();
+    }
+    else {
+        document.querySelector("#annotationRemoveText").classList.add('hidden');
+        document.querySelector("#annotationRemoveNumber").classList.add('hidden');
+        document.querySelector("#confirmRemoveAnnotation").classList.add('hidden');
+        document.querySelector("#stopAnnotationRemoveMode").classList.add('hidden');
+    }
+}
+
+function removeAnnotation() {
+    id = parseInt(document.querySelector("#annotationRemoveNumber").value, 10);
+    let i = 0;
+    for (i = id; i < annotations.length - 1; i++)
+    {
+        z = i + 1;
+
+        let j = '#annotation-index-' + z;
+        var element = document.querySelector(j);
+        element.innerText = +i;
+        element.id = 'annotation-index-' + i;
+        j = '#annotation-' + z;
+        element = document.querySelector(j);
+        element.id = 'annotation-' + i;
+        j = '#annotation-text-' + z;
+        element = document.querySelector(j);
+        var temp = element.innerText;
+        element.id = 'annotation-text-' + i; 
+        element.innerText = temp;
+
+        annotations[i] = annotations[i+1];
+    }
+    var x = "annotation-index-" + id;
+    var element = document.getElementById(x);
+    element.parentNode.removeChild(element);
+    x = "annotation-" + id;
+    var element = document.getElementById(x);
+    element.parentNode.removeChild(element);
+    annotations.pop();
+
+    if (annotations.length == 0)
+        input.setAttribute("max", "0");
+    else
+        input.setAttribute("max",annotations.length - 1);
+    if ((input.value > (annotations.length - 1)) && input.value != "0")
+        input.value--;
 }

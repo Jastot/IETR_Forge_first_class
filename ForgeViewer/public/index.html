@@ -39,18 +39,26 @@
       <div class="col-sm-4 fill1" id="left">
         <div class="panel panel-default fill">
           <div class="panel-heading" data-toggle="tooltip">
-            Tree Model
+            <h3>Аннотации</h3>
             <!--<span id="refreshBuckets" class="glyphicon glyphicon-refresh" style="cursor: pointer"></span>
             <button class="btn btn-xs btn-info" style="float: right" id="showFormCreateBucket" data-toggle="modal" data-target="#createBucketModal">
               <span class="glyphicon glyphicon-folder-close"></span> New bucket
             </button>-->
+            <button id="annotationMode" onclick="setAnnotationMode()">Добавить</button>
+            <button id="annotationRemoveMode" onclick="setAnnotationRemoveMode()">Убрать</button>
+            <p id="annotationAddText" class='hidden'>Введите текст для аннотации (при желании) и кликните по месту, куда хотите ее добавить.</p>
             <input type="text" id="annotationText" class='hidden'>
-            <button id="annotationMode" onclick="setAnotationMode()">ок</button>
+            <button id="stopAnnotationMode" class ='hidden' onclick="setAnnotationMode()">Завершить</button>
+            <p id="annotationRemoveText" class='hidden'>Введите номер аннотации, которую хотите удалить.</p>
+            <input id="annotationRemoveNumber" type="number" min="0" class='hidden'>
+            <button id="confirmRemoveAnnotation" class='hidden' onclick="removeAnnotation()">Удалить</button>
+            <button id="stopAnnotationRemoveMode" class='hidden' onclick="setAnnotationRemoveMode()">Завершить</button>
           </div>
           <!--<div id="appBuckets">
             tree here
           </div>-->
           <div class="objectTrees">
+            <h4 class="panel-heading treeHead">Дерево элементов</h4>
             <table class="items_table1 table">
               <thead>
                 <tr>
@@ -94,6 +102,7 @@
       </div>
     </div>
   </div>
+  <!--блок с информацией-->
   <div class= "panelpublic" >
     <article>
       <p>Описание</p>
@@ -115,7 +124,6 @@
     lessLink: '<a href="#">Скрыть</a>'
 });
 </script>
-
 
 </body>
 </html>
