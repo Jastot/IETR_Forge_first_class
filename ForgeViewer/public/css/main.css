@@ -45,7 +45,7 @@ body {
 .objectTrees tbody{
   display:block;
   overflow:auto;
-  height: calc(100vh - 190px);
+  height: calc(100vh - 300px);
   width:fit-content;
 }
 
